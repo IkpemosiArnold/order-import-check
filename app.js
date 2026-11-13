@@ -228,7 +228,7 @@ function shortReason(r) {
     }
     case "duplicate": {
       const first = state.results.find((y) => y.line.id === r.duplicateOf)?.line;
-      return first ? `Repeats ${SOURCES[first.source]}, ${first.loc.split(",")[0].toLowerCase()}.` : "Repeats an earlier line.";
+      return first ? `Possible repeat of ${SOURCES[first.source]}, ${first.loc.split(",")[0].toLowerCase()}.` : "Possible repeat of an earlier line.";
     }
     default: return x.text;
   }
@@ -345,7 +345,7 @@ function render({ fresh = false, focusId = null } = {}) {
 
   let li = rows.children[0];
   if (focusId) li = [...rows.children].find((x) => x._entry.id === focusId) || li;
-  if (li) {
+  if (li && (wide.matches || focusId)) {
     show(li._entry, Boolean(focusId));
     if (focusId) li.scrollIntoView({ block: "start", behavior: calm() ? "auto" : "smooth" });
   }

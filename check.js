@@ -93,7 +93,8 @@ export function checkLine(line, master, { dispatchDate }) {
     }
   }
 
-  // 5. Dangerous goods need UN number, class and packing group for the transport document (ADR 5.4.1.1.1).
+  // 5. Dangerous goods. The master must say one of two things: the ADR entry, or that the article is not
+  // dangerous goods (dg: false). A record that says neither is held. Missing is not the same as safe.
   if (item) {
     if (item.dg) {
       const miss = [];
@@ -107,8 +108,11 @@ export function checkLine(line, master, { dispatchDate }) {
       } else {
         checks.push({ key: "dg", state: "pass", label: "Dangerous goods", text: `UN ${item.dg.un}, class ${item.dg.adrClass}, PG ${item.dg.packingGroup}` });
       }
+    } else if (item.dg === false) {
+      checks.push({ key: "dg", state: "pass", label: "Dangerous goods", text: "Marked as not dangerous goods in the master" });
     } else {
-      checks.push({ key: "dg", state: "pass", label: "Dangerous goods", text: "Not regulated for road (no ADR entry in the master)" });
+      hold("dg_unknown", `The product master does not say whether this article is dangerous goods. Not assumed safe.`, null);
+      checks.push({ key: "dg", state: "fail", label: "Dangerous goods", text: `Status ${NOT_FOUND} in the product master` });
     }
   }
 
@@ -177,10 +181,10 @@ export function checkMorning(morning, master, { dispatchDate }) {
     if (first) {
       r.reasons.push({
         code: "duplicate",
-        text: `Same PO, article, quantity and pack as ${SOURCES[first.source]}, ${first.loc}. Held so it is not imported twice.`,
+        text: `Same PO, article, quantity and pack as ${SOURCES[first.source]}, ${first.loc}. It could be a repeat or a second order. Held for a person to say which.`,
         mark: "article",
       });
-      r.checks.push({ key: "dup", state: "fail", label: "Duplicate", text: `Repeats ${SOURCES[first.source]}, ${first.loc}` });
+      r.checks.push({ key: "dup", state: "fail", label: "Duplicate", text: `Same as ${SOURCES[first.source]}, ${first.loc}` });
       r.duplicateOf = first.id;
     } else {
       seen.set(key, line);

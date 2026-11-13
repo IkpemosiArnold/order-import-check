@@ -24,13 +24,13 @@
     <header class="top">
       <p class="mark">Order Import Check</p>
       <h1>This morning's orders, checked before they reach the ERP.</h1>
-      <p class="sub">A printed list, a CSV export and an email, against the product master. Sample data.</p>
+      <p class="sub">A printed list typed out as text, a CSV export and an email, checked against the product master by plain code. Sample data.</p>
     </header>
 
     <section class="reading" aria-labelledby="summary">
       <p class="summary" id="summary" role="status"><span class="sum-main">Checking</span></p>
       <button type="button" class="btn text why-btn" id="why-btn" aria-expanded="false" aria-controls="why">What staged means</button>
-      <p class="why-text" id="why" hidden>A line is staged when its article number is in the product master, the pack is one it is sold in, the CAS number checks out, a dangerous good has its UN number, class and packing group, the batch is in date on the dispatch day, and it is not a repeat. Anything else is held back with the reason. Nothing is guessed.</p>
+      <p class="why-text" id="why" hidden>A line is staged when its article number is in the product master, the pack is one it is sold in, the CAS number checks out, the master either carries the UN number, class and packing group or marks the article as not dangerous goods, the batch is in date on the dispatch day, and it is not a possible repeat. Anything else is held back with the reason. Nothing is guessed.</p>
       <div id="groups" class="groups"></div>
     </section>
 
@@ -72,8 +72,8 @@
     <button type="button" class="btn text terms-btn" id="terms-btn" aria-expanded="false" aria-controls="terms">Terms and sources</button>
     <div class="terms" id="terms" hidden>
       <p><b>CAS number.</b> The registry number for a substance. The last digit is a check digit; this page tests it the way <a href="https://www.cas.org/training/documentation/chemical-substances/checkdig">CAS describes</a>.</p>
-      <p><b>UN number, ADR class, packing group.</b> What a dangerous good needs on its road transport document under ADR 5.4.1.1.1, with values from ADR Table A (<a href="https://unece.org/transport/dangerous-goods">UNECE, ADR 2025</a>; plain summary from the <a href="https://www.hse.gov.uk/cdg/manual/consignment.htm">UK HSE</a>).</p>
-      <p><b>First expiry, first out (FEFO).</b> Stock leaves in order of expiry; expired stock leaves saleable stock. EU Good Distribution Practice guidelines, <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52013XC1123(01)">2013/C 343/01</a>, section 5.5.</p>
+      <p><b>UN number, class, packing group.</b> Three of the things ADR 5.4.1.1.1 puts on the road transport document for a dangerous good. It also asks for the proper shipping name and, where one is assigned, the tunnel restriction code, as in "UN 1789 CHLORWASSERSTOFFSÄURE, 8, II, (E)". This page checks the three only. Sample values match the ADR 2025 entries in <a href="https://www.dgg.bam.de/dgginfo/search?lang=en">BAM's dangerous goods database</a>. The rule is in <a href="https://unece.org/transport/dangerous-goods">ADR 2025 (UNECE)</a>; the <a href="https://www.hse.gov.uk/cdg/manual/consignment.htm">UK HSE</a> lists the items in plain words.</p>
+      <p><b>First expiry, first out (FEFO).</b> The batch that expires soonest leaves first. EU Good Distribution Practice asks for it for medicines (<a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52013XC1123(01)">2013/C 343/01</a>, section 5.5) and for active substances (<a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52015XC0321(01)">2015/C 95/01</a>, chapter 6). Both go further than this page: stock near its expiry comes out of saleable stock, and what is picked needs an appropriate remaining shelf life. This page only checks that a batch is in date on the dispatch day.</p>
       <p><b>Art.-Nr., Gebinde, Charge.</b> German order lists: article number, pack, batch.</p>
     </div>
     <p>Built by Arnold Ikpemosi Adeyemi. Made-up customers, orders and batches. Not regulatory advice.</p>

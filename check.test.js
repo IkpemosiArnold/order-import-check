@@ -109,6 +109,16 @@ test("filling in the UN number lets the acid through", () => {
   assert.deepEqual(summarize(results), { total: 13, held: 4, staged: 9 });
 });
 
+test("an article whose dangerous goods status is missing is held, not assumed safe", () => {
+  const master = clone(S.master);
+  delete master.find((m) => m.article === "20220").dg;
+  const { results } = run({ master });
+  const r = results.find((x) => x.line.id === "csv-4");
+  assert.equal(r.status, "held");
+  assert.deepEqual(r.reasons.map((x) => x.code), ["dg_unknown"]);
+  assert.equal(results.find((x) => x.line.id === "printed-3").status, "staged"); // dg: false still passes
+});
+
 test("a CAS number on the order that disagrees with the master is held", () => {
   const csv = S.csvExport.replace("67-64-1", "67-64-2");
   const { results } = run({ csvExport: csv });

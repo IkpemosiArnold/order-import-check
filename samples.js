@@ -1,13 +1,13 @@
 // Sample data for one morning at a made-up fine chemicals distributor in Germany.
 // Customers, orders, batches and expiry dates are invented for this demo.
 // CAS numbers, UN numbers and ADR classes are the public values for these substances;
-// packing groups are the usual ones for these grades. Check your own SDS, section 14.
+// packing groups match the ADR 2025 entries for these strengths. Check your own SDS, section 14.
 
 export const dispatchDate = "2026-11-13";
 
 // A printed order list, typed out line by line as it reads on paper.
 export const printedList = `AUFTRAGSLISTE                          Druck 12.11.2026 07:12
-Kunde: Nordwerk Pharma GmbH            Bestell-Nr.: 4500017731
+Kunde: Muster Pharma GmbH              Bestell-Nr.: 4500017731
 Liefertermin: 13.11.2026
 
 Pos  Art.-Nr.  Bezeichnung                  Menge  Gebinde  Charge
@@ -42,7 +42,8 @@ Thanks and best regards
 Jana Weber
 Purchasing`;
 
-// The product master (Artikelstamm). dg is null for goods not regulated for road transport.
+// The product master (Artikelstamm). dg is false where the master marks the article as not dangerous goods.
+// A record with no dg entry at all is held: missing is not the same as safe.
 export const master = [
   {
     article: "10110", name: "Ethanol 96 % Ph. Eur.", cas: "64-17-5",
@@ -78,31 +79,31 @@ export const master = [
   {
     article: "30310", name: "Citronensäure wasserfrei Ph. Eur.", cas: "77-92-9",
     packs: [{ size: 1, unit: "kg" }, { size: 25, unit: "kg" }],
-    dg: null,
+    dg: false,
     batches: [{ batch: "C2511-008", expiry: "2026-10-31" }, { batch: "C2604-021", expiry: "2029-04-30" }],
   },
   {
     article: "30320", name: "Glycerin 99,5 % Ph. Eur.", cas: "56-81-5",
     packs: [{ size: 1, unit: "kg" }, { size: 25, unit: "kg" }, { size: 250, unit: "kg" }],
-    dg: null,
+    dg: false,
     batches: [{ batch: "G2602-019", expiry: "2027-02-28" }, { batch: "G2608-066", expiry: "2028-08-31" }],
   },
   {
     article: "30330", name: "Natriumchlorid Ph. Eur.", cas: "7647-14-5",
     packs: [{ size: 1, unit: "kg" }, { size: 25, unit: "kg" }],
-    dg: null,
+    dg: false,
     batches: [{ batch: "K2601-003", expiry: "2029-01-31" }],
   },
   {
     article: "40410", name: "Cellulose mikrokristallin Ph. Eur.", cas: "9004-34-6",
     packs: [{ size: 20, unit: "kg" }],
-    dg: null,
+    dg: false,
     batches: [{ batch: "M2512-090", expiry: "2027-12-31" }, { batch: "M2606-015", expiry: "2028-06-30" }],
   },
   {
     article: "40420", name: "Magnesiumstearat Ph. Eur.", cas: "557-04-0",
     packs: [{ size: 10, unit: "kg" }, { size: 25, unit: "kg" }],
-    dg: null,
+    dg: false,
     batches: [{ batch: "T2603-027", expiry: "2027-03-31" }],
   },
 ];
