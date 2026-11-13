@@ -1,0 +1,9 @@
+{
+  "name": "order-import-check",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Morning order lists checked against a product master and staged as an import a person approves.",
+  "scripts": { "test": "node --test" },
+  "license": "MIT"
+}

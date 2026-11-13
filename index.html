@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Order Import Check</title>
+<meta name="description" content="A morning's order lists checked against a product master in plain code, and staged as an import a person approves.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfcfd">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d111c">
+<link rel="icon" href="data:,">
+<link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 16 16"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.2 2.2"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="M6 3.5L10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<main class="shell">
+  <div class="sheet-col">
+    <header class="top">
+      <p class="mark">Order Import Check</p>
+      <h1>This morning's orders, checked before they reach the ERP.</h1>
+      <p class="sub">A printed list, a CSV export and an email, against the product master. Sample data.</p>
+    </header>
+
+    <section class="reading" aria-labelledby="summary">
+      <p class="summary" id="summary" role="status"><span class="sum-main">Checking</span></p>
+      <button type="button" class="btn text why-btn" id="why-btn" aria-expanded="false" aria-controls="why">What staged means</button>
+      <p class="why-text" id="why" hidden>A line is staged when its article number is in the product master, the pack is one it is sold in, the CAS number checks out, a dangerous good has its UN number, class and packing group, the batch is in date on the dispatch day, and it is not a repeat. Anything else is held back with the reason. Nothing is guessed.</p>
+      <div id="groups" class="groups"></div>
+    </section>
+
+    <section class="approve" id="approve" aria-labelledby="approve-h">
+      <h2 id="approve-h">Staged import</h2>
+      <p class="tool-sub" id="approve-sub"></p>
+      <div class="actions">
+        <button type="button" id="approve-btn" class="btn primary">Approve</button>
+        <button type="button" id="download-btn" class="btn text" hidden>Download import file</button>
+        <button type="button" id="file-btn" class="btn text" aria-expanded="false" aria-controls="file-pre">Show the file</button>
+      </div>
+      <p class="ok-line st-pass" id="approved" role="status" hidden></p>
+      <div class="file-scroll" id="file-wrap" hidden><pre id="file-pre"></pre></div>
+    </section>
+  </div>
+
+  <aside class="evidence-col" id="side" aria-live="polite"></aside>
+
+  <section class="tool" id="edit-tool" aria-labelledby="edit-h">
+    <h2 id="edit-h">Change the morning</h2>
+    <p class="tool-sub">Edit any source or the product master, then check again. Or fill in the acid's missing UN number and watch it go through.</p>
+    <div class="seg" role="tablist" aria-label="Source to edit">
+      <button type="button" role="tab" class="seg-btn" data-src="printedList" aria-selected="true">Printed list</button>
+      <button type="button" role="tab" class="seg-btn" data-src="csvExport" aria-selected="false">CSV</button>
+      <button type="button" role="tab" class="seg-btn" data-src="email" aria-selected="false">Email</button>
+      <button type="button" role="tab" class="seg-btn" data-src="master" aria-selected="false">Master</button>
+    </div>
+    <label class="sr" for="src-in">Source text</label>
+    <textarea id="src-in" rows="10" spellcheck="false" autocomplete="off" autocapitalize="off" wrap="off"></textarea>
+    <div class="actions">
+      <button type="button" id="check-btn" class="btn primary">Check again</button>
+      <button type="button" id="fix-btn" class="btn text">Fill in UN 1789 for me</button>
+      <button type="button" id="reset-btn" class="btn text">Reset sample</button>
+    </div>
+    <p id="src-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <footer class="foot" id="foot">
+    <button type="button" class="btn text terms-btn" id="terms-btn" aria-expanded="false" aria-controls="terms">Terms and sources</button>
+    <div class="terms" id="terms" hidden>
+      <p><b>CAS number.</b> The registry number for a substance. The last digit is a check digit; this page tests it the way <a href="https://www.cas.org/training/documentation/chemical-substances/checkdig">CAS describes</a>.</p>
+      <p><b>UN number, ADR class, packing group.</b> What a dangerous good needs on its road transport document under ADR 5.4.1.1.1, with values from ADR Table A (<a href="https://unece.org/transport/dangerous-goods">UNECE, ADR 2025</a>; plain summary from the <a href="https://www.hse.gov.uk/cdg/manual/consignment.htm">UK HSE</a>).</p>
+      <p><b>First expiry, first out (FEFO).</b> Stock leaves in order of expiry; expired stock leaves saleable stock. EU Good Distribution Practice guidelines, <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52013XC1123(01)">2013/C 343/01</a>, section 5.5.</p>
+      <p><b>Art.-Nr., Gebinde, Charge.</b> German order lists: article number, pack, batch.</p>
+    </div>
+    <p>Built by Arnold Ikpemosi Adeyemi. Made-up customers, orders and batches. Not regulatory advice.</p>
+    <p><a href="https://ikpemosi.work">ikpemosi.work</a></p>
+  </footer>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
